@@ -1,0 +1,2 @@
+三月 11, 2018 5:22:17 下午 marginafterdecomplie.MainRun main
+INFO: This is a text log.

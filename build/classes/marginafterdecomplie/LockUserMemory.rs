@@ -1,0 +1,2 @@
+LockUserMemory
+com.example.sdksamples.LockUserMemory
