@@ -100,8 +100,8 @@ public class OperationCompleteHandler implements TagReportListener, TagOpComplet
 	}
 
 	@Override
-	public synchronized void onTagReported(ImpinjReader reader, TagReport report) {
-		
+	public void onTagReported(ImpinjReader reader, TagReport report) {
+		System.out.println("On tag report....");
 		List<Tag> tags = report.getTags();
 		if (tags.size() > 1) {
 			javax.swing.JOptionPane.showMessageDialog(null, "Cant not handler more than two tags read at the same time!");
