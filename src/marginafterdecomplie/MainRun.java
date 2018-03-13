@@ -30,35 +30,35 @@ public class MainRun
             br1=cin_txt.getBr();
        
          try {
-             //日志记录器
+             //鏃ュ織璁板綍鍣�
              //ToarrayList(BufferedReader br1, ArrayList Chiphead, ArrayList Chiptype) throws IOException
              cin_txt.ToarrayList(br1,chipHead,  ChipType);
          } catch (IOException ex) {
              Logger.getLogger(MainRun.class.getName()).log(Level.SEVERE, null, ex);
          }
-Logger logger = Logger.getLogger("marginafterdecomplie");//日志处理器
+Logger logger = Logger.getLogger("marginafterdecomplie");//鏃ュ織澶勭悊鍣�
 FileHandler fileHandler = null;
  filePath = MyPath.getProjectPath();
       try {
-          fileHandler = new FileHandler("C:\\Development\\java impinj\\MarginAfterDecomplie\\test.txt");
+          fileHandler = new FileHandler("test.txt");
       } catch (IOException | SecurityException ex) {
           Logger.getLogger(MainRun.class.getName()).log(Level.INFO, null, ex);
       }
 
-//需要记录的日志消息
+//闇�瑕佽褰曠殑鏃ュ織娑堟伅
 
 LogRecord lr = new LogRecord(Level.INFO, "This is a text log.");
-//为处理器设置日志格式：Formatter
+//涓哄鐞嗗櫒璁剧疆鏃ュ織鏍煎紡锛欶ormatter
 SimpleFormatter sf = new SimpleFormatter();
 fileHandler.setFormatter(sf);
-//注册处理器
+//娉ㄥ唽澶勭悊鍣�
 logger.addHandler(fileHandler);
-//记录日志消息
+//璁板綍鏃ュ織娑堟伅
 logger.log(lr);
       marginW.setVisible(true); }
   
   public static void testRenameFile(String fileN,String Nfile) {  
-    //String filePath = "D:/test/我是.conf";  
+    //String filePath = "D:/test/鎴戞槸.conf";  
     
     try {  
         File src = new File(fileN);  

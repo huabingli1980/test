@@ -23,7 +23,7 @@ import com.impinj.octane.TagWriteOpResult;
 import com.impinj.octane.TargetTag;
 import com.impinj.octane.WordPointers;
 import java.util.ArrayList;
-import static marginafterdecomplie.UterqueEncodingAfterReport.EPC_OP_ID;
+import static marginafterdecomplie.OperationCompleteHandler.EPC_OP_ID;
 
 /**
  *

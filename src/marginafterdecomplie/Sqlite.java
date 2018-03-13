@@ -178,9 +178,18 @@ public void RunSql(String sql)
 
     }
     
-    
     public  static void insetToLogReport(String SourceTalble, String DentTable)
     {
         
     }
+
+	public void markUsedByEPC(String newEpc) {
+		String sql = "UPDATE warehouses SET EncodeStatus = 'used' WHERE EPC ='" + newEpc + "'";
+		RunSql(sql);
+	}
+
+	public void markSuccessByEPC(String newEpc) {
+		String sql = "UPDATE warehouses SET EncodeStatus = 'Success' WHERE EPC ='" + newEpc + "'";
+		RunSql(sql);
+	}
 }
