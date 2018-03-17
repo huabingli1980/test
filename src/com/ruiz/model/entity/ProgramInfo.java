@@ -1,7 +1,6 @@
 package com.ruiz.model.entity;
 
-public class ProgramInfo {
-	
+public class ProgramInfo {	
 	    private String epc;
 		public String getEpc() {
 			return epc;
@@ -9,12 +8,22 @@ public class ProgramInfo {
 		public void setEpc(String epc) {
 			this.epc = epc;
 		}
+
 		private String userM;
     	private String accessPW;
     	private String accessPWLock;
     	private String epcLock;
     	private String userLock;
     	private String killPWlock;
+        private int id;
+          
+        
+               public int getId() {
+			return id;
+		}
+		public void setId(int ID) {
+			this.id = ID;
+		}
     	
     	
 		public String getAccessPW() {

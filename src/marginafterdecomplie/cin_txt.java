@@ -16,49 +16,21 @@ package marginafterdecomplie;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-    public  class cin_txt {  
-       
-    
+    public  class cin_txt {      
                 
         
          String filePath = MyPath.getProjectPath();
-       static   String typeTidHead;
+       static  String typeTidHead;
+     static  Map<String,String> ChipTypeMap= new HashMap<>();
         // System.out.println(filePath);
         // javax.swing.JOptionPane.showMessageDialog(null, filePath);
-        public static String getChipType(String TID,BufferedReader br1) {  
-            try { // 防止文件建立或读取失败，用catch捕捉错误并打印，也可以throw  
-                /* 读入TXT文件 */                 
-               // String line = "";  
-              br1.mark(0);
-              String  line = br1.readLine();  
+        public static String getChipType(String TID) {               
               typeTidHead="";
-                while (line != null) {  
-                    line = br1.readLine(); // 一次读入一行数据  
-                    String chiptype= line.split(" ")[0];
-                    String head1= line.split(" ")[1];
-                    String TIDhead=TID.substring(0,8);
-                   if (head1.equals(TIDhead))
-                           {
-                               typeTidHead=chiptype;                               
-                              br1.reset();
-                               break;
-                           }
-                  
-                    
-                }  
-
-                /* 写入Txt文件  
-                File writename = new File(".\\result\\en\\output.txt"); // 相对路径，如果没有则要建立一个新的output。txt文件  
-                writename.createNewFile(); // 创建新文件  
-                BufferedWriter out = new BufferedWriter(new FileWriter(writename));  
-                out.write("我会写入文件啦\r\n"); // \r\n即为换行  
-                out.flush(); // 把缓存区内容压入文件  
-                out.close(); // 最后记得关闭文件  
-               */ 
-            } catch (IOException e) {  
-                
-            }  
+              String TIDhead=TID.substring(0,8);
+              typeTidHead=ChipTypeMap.get(TIDhead);          
              return typeTidHead;
         }  
         
@@ -84,10 +56,8 @@ import java.util.ArrayList;
                 // 一次读入一行数据
                 System.out.println("---"+line+"---");
                 String chiptype= line.split(",")[0];
-                String head1= line.split(",")[1];
-               // String TIDhead=TID.substring(0,8);
-               Chiphead.add(head1);
-               Chiptype.add(chiptype);
+                String head1= line.split(",")[1];              
+               ChipTypeMap.put(head1, chiptype);
               line = br1.readLine();
   
             }

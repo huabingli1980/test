@@ -1,7 +1,5 @@
 package marginafterdecomplie;
-
 import static marginafterdecomplie.cin_txt.typeTidHead;
-
 import java.awt.Rectangle;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,9 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.table.DefaultTableModel;
-
 import com.impinj.octane.BitPointers;
 import com.impinj.octane.ImpinjReader;
 import com.impinj.octane.MarginReadMask;
@@ -38,6 +34,9 @@ import com.impinj.octane.TagWriteOp;
 import com.impinj.octane.TagWriteOpResult;
 import com.impinj.octane.TargetTag;
 import com.impinj.octane.WordPointers;
+import static com.ruiz.constant.ReaderOpConsts.*;
+import static marginafterdecomplie.cin_txt.getChipType;
+
 
 public class TagReptLisImplandMarginA implements TagReportListener {
 
@@ -61,13 +60,8 @@ public class TagReptLisImplandMarginA implements TagReportListener {
 	EPC2Barcode barcode = new EPC2Barcode();
 	// cin_txt txt1= new cin_txt();
 
-	public TagReptLisImplandMarginA() {
-	}
-
 	int MarginPoint = 0;
-
 	public class MyTag {
-
 		private String epc;
 		private String tid;
 		private String ctype;
@@ -147,9 +141,8 @@ public class TagReptLisImplandMarginA implements TagReportListener {
 				String nowtime = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS").format(date);
 				String chipType = getChipType(currentTid);
 				String Barcode = barcode.getBarcode(currentEpc);
-
 				tableModel.addRow(new String[] { marginW.ListT.getRowCount() + 1 + "", currentTid, currentEpc, "", "",
-						chipType, Barcode, nowtime });
+				chipType, Barcode, nowtime });
 				System.out.println(tidepcT);
 				Myhashdata.add(mytag);
 				Resulttidepc.add(currentTid + currentEpc);
@@ -315,7 +308,7 @@ public class TagReptLisImplandMarginA implements TagReportListener {
 			}
 
 			outstanding++;
-			reader.removeTagOpCompleteListener();
+			//reader.removeTagOpCompleteListener();
 			reader.addOpSequence(seq);
 
 			// reader.setTagOpCompleteListener(new WriteChip());
@@ -461,13 +454,5 @@ public class TagReptLisImplandMarginA implements TagReportListener {
 
 	}
 
-	public static String getChipType(String TID) {
-
-		typeTidHead = "";
-		String TIDhead = TID.substring(0, 8);
-		int tt = MainRun.chipHead.indexOf(TIDhead);
-		typeTidHead = MainRun.ChipType.get(tt).toString();
-
-		return typeTidHead;
-	}
+	
 }

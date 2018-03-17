@@ -23,12 +23,8 @@ public class MainRun
    public static  ArrayList ChipType= new ArrayList();
    
    // private static String filePath;
-  public static void main(String[] args) throws FileNotFoundException {
-      
-      
-      
-            br1=cin_txt.getBr();
-       
+  public static void main(String[] args) throws FileNotFoundException {      
+            br1=cin_txt.getBr();       
          try {
              //鏃ュ織璁板綍鍣�
              //ToarrayList(BufferedReader br1, ArrayList Chiphead, ArrayList Chiptype) throws IOException

@@ -5,6 +5,9 @@
  */
 package marginafterdecomplie;
 import com.impinj.octane.OctaneSdkException;
+import com.ruiz.model.domain.OpCompleteHandler;
+import com.ruiz.utils.ContextManager;
+import com.ruiz.utils.ReaderManager;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.io.BufferedReader;
@@ -24,6 +27,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import static marginafterdecomplie.ConnectOp1.reader;
 import static marginafterdecomplie.MainRun.filePath;
+//import static marginafterdecomplie.OperationCompleteHandler.TidEpcMatchID;
 import org.dom4j.DocumentException;
 
 /**
@@ -46,7 +50,7 @@ public class CodingForm extends javax.swing.JFrame {
     public CodingForm() {
         initComponents();
    
-        Codehex.setText("AAAAAAAAAAAAAAAAAAAAAAAA");
+       // ChipType.setText("AAAAAAAAAAAAAAAAAAAAAAAA");
         ListT.getColumnModel().getColumn(0).setPreferredWidth(60);
         ListT.getColumnModel().getColumn(0).setMaxWidth(60);
         // ListT.getColumnModel().getColumn(0).setHeaderValue("suuuu");
@@ -54,6 +58,9 @@ public class CodingForm extends javax.swing.JFrame {
         ListT.getColumnModel().getColumn(2).setPreferredWidth(120);
         ListT.getColumnModel().getColumn(3).setPreferredWidth(120);
         filePath = MyPath.getProjectPath();
+        Total.setText("0");
+        Good.setText("0");
+        Bad.setText("0");
        /* try {
             br = cin_txt.getBr();
             //URL url = this.class.getProtectionDomain().getCodeSource().getLocation();
@@ -66,6 +73,7 @@ public class CodingForm extends javax.swing.JFrame {
                 try {
                     SKU.removeAllItems();
                     PONum.removeAllItems();
+                    OperationCompleteHandler.ID=0;
                     if (xmlORcsv.getSelectedItem() == "xml") {
                          XMLParse.XMLread(xmlF.getText(),PONum,SKU);
                     } else if (xmlORcsv.getSelectedItem() == "csv") {
@@ -159,14 +167,14 @@ public class CodingForm extends javax.swing.JFrame {
 
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        Bad = new javax.swing.JTextField();
         Total = new javax.swing.JTextField();
+        Good = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         ListT = new javax.swing.JTable();
         RorW = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        Codehex = new javax.swing.JTextField();
+        ChipType = new javax.swing.JTextField();
         GetXml = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         xmlF = new javax.swing.JTextArea();
@@ -180,6 +188,10 @@ public class CodingForm extends javax.swing.JFrame {
         TagQty = new javax.swing.JTextField();
         Encoded = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -199,18 +211,18 @@ public class CodingForm extends javax.swing.JFrame {
             }
         });
 
-        jTextField2.setName("Good"); // NOI18N
+        Bad.setName("Good"); // NOI18N
 
-        jTextField3.setName("Bad"); // NOI18N
+        Total.setName("Bad"); // NOI18N
 
-        Total.setName("Total"); // NOI18N
+        Good.setName("Good"); // NOI18N
 
         ListT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "seq", "Tid", "OriginalEPC", "NewEpc", "Result", "MarginResult", "time", "ProcessTime"
+                "seq", "Tid", "OriginalEPC", "NewEpc", "Result", "WriteResult", "time", "ProcessTime"
             }
         ));
         jScrollPane1.setViewportView(ListT);
@@ -225,7 +237,7 @@ public class CodingForm extends javax.swing.JFrame {
 
         jLabel3.setText("Operation Type:");
 
-        Codehex.setName("Good"); // NOI18N
+        ChipType.setName("Good"); // NOI18N
 
         GetXml.setText("...");
         GetXml.setName("ClearL"); // NOI18N
@@ -284,6 +296,14 @@ public class CodingForm extends javax.swing.JFrame {
 
         jLabel8.setText("Encoded:");
 
+        jLabel4.setText("Chip Type:");
+
+        jLabel9.setText("Total:");
+
+        jLabel10.setText("Good:");
+
+        jLabel11.setText("Bad:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -299,26 +319,33 @@ public class CodingForm extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(ChipType, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(jLabel6)))
                                 .addGap(28, 28, 28))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(RorW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(23, 23, 23)
-                                        .addComponent(jButton3))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(Codehex, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(8, 8, 8)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(Total, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(6, 6, 6)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(RorW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(Total, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(Good, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(Bad, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(90, 90, 90)
                                 .addComponent(xmlORcsv, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,7 +359,8 @@ public class CodingForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(GetXml, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton2))
+                                    .addComponent(jButton2)
+                                    .addComponent(jButton3))
                                 .addGap(27, 27, 27))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(SKU, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -349,30 +377,41 @@ public class CodingForm extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(xmlORcsv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49)
-                        .addComponent(jLabel5)
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabel6))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(Bad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11))
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel6))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(ChipType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(RorW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel3))
-                                    .addComponent(jButton3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(Codehex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(RorW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)
                                     .addComponent(Total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9))
+                                .addGap(9, 9, 9)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(Good, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(GetXml, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(GetXml, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton3))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(PONum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -387,9 +426,9 @@ public class CodingForm extends javax.swing.JFrame {
                                 .addComponent(SKU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel7)
                                 .addComponent(TagQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -411,12 +450,22 @@ public class CodingForm extends javax.swing.JFrame {
         } catch (OctaneSdkException ex) {
             Logger.getLogger(CodingForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            ConnectOp1.reader.stop();
-        } catch (com.impinj.octane.OctaneSdkException ex) {
-            java.util.logging.Logger.getLogger(MarginTest1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        Total.setText("0");        // TODO add your handling code here:
+    OperationCompleteHandler.Mepclist.clear();
+    OperationCompleteHandler.Mtidlist.clear();
+    OperationCompleteHandler.epclist.clear();
+    OperationCompleteHandler.tidEpcList.clear();
+    OperationCompleteHandler.TidEpcMatchID.clear();
+    
+    ContextManager.tidList.clear();
+    OpCompleteHandler.workingRow=0;
+    ReaderManager.outstanding=0;
+    
+    
+    //OperationCompleteHandler.ID=0;
+   // OperationCompleteHandler.Resulttidepc.clear();
+        
+        ContextManager.tagsProcessed.clear();
+        Good.setText("0");        // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void RorWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RorWActionPerformed
@@ -580,10 +629,12 @@ if (csvnfilename.contains(" ")){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JTextField Codehex;
+    public javax.swing.JTextField Bad;
+    public javax.swing.JTextField ChipType;
     public javax.swing.JTextField Encoded;
     private javax.swing.JButton GetOrderL;
     public javax.swing.JButton GetXml;
+    public javax.swing.JTextField Good;
     public javax.swing.JTable ListT;
     public javax.swing.JComboBox<String> PONum;
     public javax.swing.JComboBox<String> RorW;
@@ -592,15 +643,17 @@ if (csvnfilename.contains(" ")){
     public javax.swing.JTextField Total;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    public javax.swing.JTextField jTextField2;
-    public javax.swing.JTextField jTextField3;
     public javax.swing.JTextArea xmlF;
     public javax.swing.JComboBox<String> xmlORcsv;
     // End of variables declaration//GEN-END:variables

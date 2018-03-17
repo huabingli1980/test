@@ -16,14 +16,14 @@ import com.impinj.octane.TagOpCompleteListener;
 import com.impinj.octane.TagOpReport;
 import com.impinj.octane.TagOpResult;
 import com.impinj.octane.TagOpSequence;
-import com.impinj.octane.TagReport;
-import com.impinj.octane.TagReportListener;
 import com.impinj.octane.TagWriteOp;
 import com.impinj.octane.TagWriteOpResult;
 import com.impinj.octane.TargetTag;
 import com.impinj.octane.WordPointers;
 import java.util.ArrayList;
-import static marginafterdecomplie.OperationCompleteHandler.EPC_OP_ID;
+import static com.ruiz.constant.ReaderOpConsts.*;
+import static com.ruiz.utils.ReaderManager.outstanding;
+//import static marginafterdecomplie.OperationCompleteHandler.EPC_OP_ID;
 
 /**
  *
@@ -32,7 +32,7 @@ import static marginafterdecomplie.OperationCompleteHandler.EPC_OP_ID;
 public class WriteChip implements  TagOpCompleteListener {
       public static int idCounter = 1;
     
-       static int outstanding = 0;
+      // static int outstanding = 0;
      void programEpc(String currentEpc, short currentPC, String newEpc,ImpinjReader reader,int outstanding)
             throws Exception {
          
@@ -95,7 +95,41 @@ public class WriteChip implements  TagOpCompleteListener {
         
        
     }
+ public static void programAccessPW(String currentTid, ImpinjReader reader)
+            throws Exception {
+         
+     
 
+
+        System.out.println("Programming Tag accessPW to '00000000'");
+       // System.out.println("   EPC " + currentTid + " to " + newEpc);
+        TagOpSequence seq = new TagOpSequence();
+        seq.setOps(new ArrayList<>());
+        seq.setExecutionCount((short) 1); // delete after one time
+        seq.setState(SequenceState.Active);
+        seq.setId(idCounter++);
+        seq.setTargetTag(new TargetTag());
+        seq.getTargetTag().setBitPointer((short) 0);
+        seq.getTargetTag().setMemoryBank(MemoryBank.Tid);
+        seq.getTargetTag().setData(currentTid);
+
+        TagWriteOp accWrite = new TagWriteOp();
+        accWrite.Id = 0;
+        accWrite.setMemoryBank(MemoryBank.Reserved);
+        accWrite.setWordPointer(WordPointers.AccessPassword);
+        accWrite.setData(TagData.fromHexString("00000000"));
+
+        // add to the list
+        seq.getOps().add(accWrite);
+        // have to program the PC bits if these are not the same
+        outstanding++;
+      // reader.removeTagOpCompleteListener();
+        reader.addOpSequence(seq);    
+         
+         //reader.setTagOpCompleteListener(new WriteChip());
+        
+       
+    }
    
 
     @Override

@@ -16,33 +16,25 @@ import com.impinj.octane.WordPointers;
 import com.ruiz.constant.ReaderOpConsts;
 import com.ruiz.model.entity.ProgramInfo;
 
-public class ReaderManager {
-	
-	
-	
+public class ReaderManager {	
 	public static int idCounter = 1;
-	
-
 	public static String pcOPResultMsg = "";
 	public static String epcOpResultMsg = "";
 	public static String TID_OP_rst = "";
 	public static String accessPwOPResultMsg = "";
 	public static String userMemOPResultMsg = "";
-	public static String lockOPResultMsg = "";
-	
-		int outstanding = 0;
-
-		void programTag(String currentEpc, short currentPC, String newEpc, String TID, String UserM, String AccessPW,
+	public static String lockOPResultMsg = "";	
+	public static int outstanding = 0;
+        public static String newEpc=null;
+		void WriteLockTag(String currentEpc, short currentPC, String newEpc, String TID, String UserM, String AccessPW,
 				String accessPWLock, String epcLock, String KillLock, String userLock, ImpinjReader reader)
 				throws Exception {
-
 			if ((currentEpc.length() % 4 != 0) || (newEpc.length() % 4 != 0)) {
 				throw new Exception("EPCs must be a multiple of 16- bits: " + currentEpc + "  " + newEpc);
 			}
-
-			if (outstanding > 0) {
-				return;
-			}
+			//if (outstanding > 0) {
+			//	return;
+			//}
 
 			pcOPResultMsg = "";
 			epcOpResultMsg = "";
@@ -123,14 +115,15 @@ public class ReaderManager {
 			// have to program the PC bits if these are not the same
 
 			outstanding++;
-			reader.removeTagOpCompleteListener();
+			//reader.removeTagOpCompleteListener();
+                        
+                        System.out.println("op submitted for TID:"+TID);
 			reader.addOpSequence(seq);
-
 		}
-
 		public void programTag(String currentEpc, short pcBit, String currentTid,
 				ProgramInfo programInfo, ImpinjReader reader) throws Exception {
-			programTag(currentEpc, pcBit, programInfo.getEpc(), currentTid, 
+                    newEpc=programInfo.getEpc();
+			WriteLockTag(currentEpc, pcBit, programInfo.getEpc(), currentTid, 
 					programInfo.getUserM(), programInfo.getAccessPW(), programInfo.getAccessPWLock(),
 					programInfo.getEpcLock(),
 					programInfo.getKillPWlock(),

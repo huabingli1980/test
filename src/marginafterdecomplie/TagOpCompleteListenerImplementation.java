@@ -4,7 +4,6 @@ import com.impinj.octane.*;
 
 public class TagOpCompleteListenerImplementation implements
         TagOpCompleteListener {
-
     public void onTagOpComplete(ImpinjReader reader, TagOpReport results) {
         System.out.println("TagOpComplete: ");
         for (TagOpResult t : results.getResults()) {
