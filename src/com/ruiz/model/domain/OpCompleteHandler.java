@@ -69,14 +69,21 @@ public class OpCompleteHandler {
 				nowtime, 
 				"" 
 		});
-            ContextManager.addTid(chipInfo.getTid());
-        if (!cin_txt.getChipType(currentTidR).equals(codingForm.ChipType.getText())){
-            tableModel.setValueAt("TidHeadMissMatch", ContextManager.indexOfTidList(currentTidR), MainTableColumn.COLUMN_STATUS);
-            return;}
+            ContextManager.addTid(chipInfo.getTid());   
         }   
+          codingForm.Total.setText(tidList.size() + "");
+             if (!cin_txt.getChipType(currentTidR).equals(codingForm.ChipType.getText())){
+            tableModel.setValueAt("TidHeadMissMatch", ContextManager.indexOfTidList(currentTidR), MainTableColumn.COLUMN_STATUS);
+            // TidEpcMatchID.get(currentTidR).getchipinfo().setProgstatus("TidHeadMissMatch");
+           // Total.setText()
+            
+            return;}
         
-             if (TidEpcMatchID.get(currentTidR)==null)  ID++;
+             if (TidEpcMatchID.get(currentTidR)==null) {
+                 ID++;            
 		System.out.println("\\nOn tag report...."+ID+"---tid:"+currentTidR);
+             } else {System.out.println("\\nOn tag report...."+TidEpcMatchID.get(currentTidR).getid()+"---tid:"+currentTidR);
+                 }
                 codingForm.Total.setText(tidList.size() + "");
                   Rectangle rect = new Rectangle(0, codingForm.ListT.getHeight(), 25, 25);
                   codingForm.ListT.scrollRectToVisible(rect);
@@ -99,7 +106,7 @@ public class OpCompleteHandler {
                         tableModel.setValueAt(ToencodeEpc, ContextManager.indexOfTidList(currentTidR), MainTableColumn.COLUMN_NEWEPC);
                     AfterEncodingTidEpcIdMatch  afterEncodingTidEpcIdMatch=new AfterEncodingTidEpcIdMatch(currentTidR,ToencodeEpc,chipInfo,ID);
                         
-                        TidEpcMatchID.put(currentTidR,afterEncodingTidEpcIdMatch);
+                    if (TidEpcMatchID.get(currentTidR)==null)    TidEpcMatchID.put(currentTidR,afterEncodingTidEpcIdMatch);
 			readerManager.programTag(currentEpc, pcBit, currentTidR, programInfo, reader);
 			
 		} catch (Exception ex) {

@@ -29,7 +29,7 @@ com.impinj.octane.AntennaConfigGroup antennas = settings.getAntennas();
       antennas.enableById(new short[] { 1 });
       antennas.getAntenna(Short.valueOf((short)1)).setIsMaxRxSensitivity(Boolean.valueOf(false));
       antennas.getAntenna(Short.valueOf((short)1)).setIsMaxTxPower(Boolean.valueOf(false));
-      antennas.getAntenna(Short.valueOf((short)1)).setTxPowerinDbm(30.0D);
+      antennas.getAntenna(Short.valueOf((short)1)).setTxPowerinDbm(13.0D);
       antennas.getAntenna(Short.valueOf((short)1)).setRxSensitivityinDbm(-70.0D);
       MyReader.setTagReportListener(new TagReptLisImplandMarginA());
       System.out.println("Applying Settings");

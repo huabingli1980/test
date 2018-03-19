@@ -36,6 +36,8 @@ public class ConnectOp1 {
 
 			} else {
 				System.out.println("DisConnecting to " + hostname);
+                                reader.queryTags();
+                                //reader.
 				reader.disconnect();
 				Thread.sleep(1000L);
 				if (reader.isConnected()) {
@@ -43,7 +45,9 @@ public class ConnectOp1 {
 					throw new Exception("wrong connection!");
 				} else {
 					MainRun.marginW.jButton1.setText("Connect");
+                                        MainRun.marginW.jButton1.setBackground(Color.RED);
 				}
+                                
 
 			}
 

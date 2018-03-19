@@ -38,12 +38,12 @@ import static marginafterdecomplie.MarginTest.codingForm;
 // NoResponseFromTag,
 // NonspecificReaderError
 public class OperationCompleteHandler implements TagReportListener, TagOpCompleteListener {
-	public static ArrayList Mepclist = new ArrayList();
-	public static ArrayList Mtidlist = new ArrayList();
-	public static ArrayList epclist = new ArrayList();
+	//public static ArrayList Mepclist = new ArrayList();
+	//public static ArrayList Mtidlist = new ArrayList();
+	//public static ArrayList epclist = new ArrayList();
        // public static ArrayList tidList = new ArrayList();	
-	public static ArrayList<String> tidEpcList = new ArrayList<String>();
-	public String tidepcT;	
+	//public static ArrayList<String> tidEpcList = new ArrayList<String>();
+	//public String tidepcT;	
 	//public static Map<String, Map<String, String>> epcTagInfoMap = new HashMap<String, Map<String, String>>();
         // Store the TID, EPC and encoding source ID map
         public static Map< String,AfterEncodingTidEpcIdMatch> TidEpcMatchID = new HashMap< String,AfterEncodingTidEpcIdMatch>();
@@ -72,6 +72,7 @@ public class OperationCompleteHandler implements TagReportListener, TagOpComplet
                            String status=tableModel.getValueAt(TieRow, MainTableColumn.COLUMN_STATUS).toString();
                      if (!"Success".equals(status))  tableModel.setValueAt("TagLocked", TieRow, MainTableColumn.COLUMN_STATUS);
                       TidEpcMatchID.get(tw.getTag().getTid().toHexString()).getchipinfo().setProgstatus("TagMemoryLockedError");
+                      System.out.println("op seq:"+tw.getSequenceId()+" results TagLocked");
                      
                 }  
                     
@@ -122,7 +123,9 @@ public class OperationCompleteHandler implements TagReportListener, TagOpComplet
 		Tag tag = tags.get(0);
 		String epc = tag.getEpc().toHexString();
 		String tid = tag.getTid().toHexString();
+                
                 /*
+                
                    codingForm.Total.setText(tidList.size() + "");
                   Rectangle rect = new Rectangle(0, codingForm.ListT.getHeight(), 25, 25);
                   codingForm.ListT.scrollRectToVisible(rect);
@@ -132,22 +135,26 @@ public class OperationCompleteHandler implements TagReportListener, TagOpComplet
                   codingForm.ListT.changeSelection(codingForm.ListT.getRowCount() - 1, 0, false, true);
                 */
                 
-                  if (tidEpcList.isEmpty()) codingForm.ChipType.setText(cin_txt.getChipType(tid));                 
+                  if (tidList.isEmpty()) codingForm.ChipType.setText(cin_txt.getChipType(tid));                 
 		 chipInfo = new ChipInfo();                
 		chipInfo.setEpc(epc);
 		chipInfo.setTid(tid);		
-           if(ContextManager.isProcessed(chipInfo)) return;
+           if(ContextManager.isProcessed(chipInfo)){
+               System.out.println(".....On tag report...."+TidEpcMatchID.get(tid).getid()+"---tid:"+tid);
+               
+               return;
+           }
            if (TidEpcMatchID.size()>0)
            {
                String ifsuccess="";
             AfterEncodingTidEpcIdMatch After1=TidEpcMatchID.get(tid);   
           if (After1!=null) ifsuccess=After1.getchipinfo().getProgstatus();
-           if ("Success".equals(ifsuccess)||"TagMemoryLockedError".equals(ifsuccess)) return; 
+           if ("Success".equals(ifsuccess)||"TagMemoryLockedError".equals(ifsuccess)||"TidHeadMissMatch".equals(ifsuccess)) return; 
            }
            
 		ContextManager.addChipInfo(chipInfo);		
 		String tidepcT = chipInfo.getTid() + "---" + chipInfo.getEpc();
-		tidEpcList.add(tidepcT);
+		//tidEpcList.add(tidepcT);
                 //tidList.add(tid);
 		opCompleteHandler.onReportHandler(reader, tag, epc, chipInfo);
 	}

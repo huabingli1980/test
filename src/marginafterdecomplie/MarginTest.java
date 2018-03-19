@@ -32,7 +32,9 @@ public class MarginTest extends javax.swing.JFrame {
     public java.util.HashSet Myhashdata;
     public static BufferedReader br;
     private ResultSet rs = null;
- public static CodingForm codingForm= new CodingForm();
+ 
+    public static CodingForm codingForm= new CodingForm();
+    public static ReaderSetting rSetting= new ReaderSetting();
     /**
      * Creates new form MarginTest
      */
@@ -139,9 +141,11 @@ public class MarginTest extends javax.swing.JFrame {
         SKU = new javax.swing.JComboBox<>();
         xmlORcsv = new javax.swing.JComboBox<>();
         GotoEncoding = new javax.swing.JButton();
+        UpdateXML = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
+        readerSetting = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
@@ -272,10 +276,27 @@ public class MarginTest extends javax.swing.JFrame {
             }
         });
 
+        UpdateXML.setText("Update XML");
+        UpdateXML.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateXMLActionPerformed(evt);
+            }
+        });
+
         jMenu2.setText("File");
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Edit");
+        jMenu3.setText("Setting");
+
+        readerSetting.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        readerSetting.setText("Read setting...");
+        readerSetting.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                readerSettingActionPerformed(evt);
+            }
+        });
+        jMenu3.add(readerSetting);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -330,8 +351,10 @@ public class MarginTest extends javax.swing.JFrame {
                                 .addGap(28, 28, 28))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(xmlORcsv, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(xmlORcsv, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(UpdateXML, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane2)
                             .addGroup(layout.createSequentialGroup()
@@ -377,7 +400,9 @@ public class MarginTest extends javax.swing.JFrame {
                                     .addComponent(Total1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(xmlORcsv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(49, 49, 49)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(UpdateXML)
+                                .addGap(15, 15, 15)
                                 .addComponent(jLabel5)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -421,7 +446,7 @@ public class MarginTest extends javax.swing.JFrame {
         try {
             ConnectOp1.reader.stop();
         } catch (com.impinj.octane.OctaneSdkException ex) {
-            java.util.logging.Logger.getLogger(MarginTest1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MarginTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         javax.swing.table.DefaultTableModel tableModel = (javax.swing.table.DefaultTableModel) ListT.getModel();
         tableModel.setRowCount(0);
@@ -548,7 +573,7 @@ public class MarginTest extends javax.swing.JFrame {
         // XPathDemo xmlp= new XPathDemo();
         try {
             XMLParse.XMLread(xmlF.getText(),PONum,SKU);
-        } catch (Exception ex) {
+        } catch (DocumentException ex) {
             Logger.getLogger(MarginTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_GetOrderLActionPerformed
@@ -565,6 +590,21 @@ public class MarginTest extends javax.swing.JFrame {
       
          codingForm.setVisible(true);
     }//GEN-LAST:event_GotoEncodingActionPerformed
+
+    private void UpdateXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateXMLActionPerformed
+           try {
+            XMLParse.XMLUpdate(xmlF.getText(),PONum,SKU,"00B07A13C43EBA8808000012");
+        } catch (DocumentException ex) {
+            Logger.getLogger(MarginTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }//GEN-LAST:event_UpdateXMLActionPerformed
+
+    private void readerSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readerSettingActionPerformed
+        rSetting.setTitle("ReaderSetting");
+        //rSetting.get
+        rSetting.setVisible(true);
+    }//GEN-LAST:event_readerSettingActionPerformed
 
     /**
      * @param args the command line arguments
@@ -613,6 +653,7 @@ public class MarginTest extends javax.swing.JFrame {
     public javax.swing.JComboBox<String> SKU;
     public javax.swing.JComboBox<String> TIDEPC;
     public javax.swing.JTextField Total1;
+    public javax.swing.JButton UpdateXML;
     public javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private static javax.swing.JButton jButton3;
@@ -629,6 +670,7 @@ public class MarginTest extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JTextField jTextField2;
     public javax.swing.JTextField jTextField3;
+    private javax.swing.JMenuItem readerSetting;
     public javax.swing.JTextArea xmlF;
     public javax.swing.JComboBox<String> xmlORcsv;
     // End of variables declaration//GEN-END:variables

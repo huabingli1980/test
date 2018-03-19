@@ -29,10 +29,11 @@ public class TimerDelNonSuccess {
         Iterator entries = tagsProcessed.iterator();  
 while (entries.hasNext()) {     
    ChipInfo entry=  (ChipInfo) entries.next();  
-  if (!"Success".equals(entry.getProgstatus())&&!"TagMemoryLockedError".equals(entry.getProgstatus())) {
+  if ((!"TidHeadMissMatch".equals(entry.getProgstatus())&&!"Success".equals(entry.getProgstatus())&&!"TagMemoryLockedError".equals(entry.getProgstatus()))||entry.getProgstatus()==null )
+  {
    entries.remove();
    
-   System.out.println("Removing....:"+entry.getTid());      
+   System.out.println(entry.getProgstatus()+"Timer Removing....:"+entry.getTid());      
          }
      }
      }

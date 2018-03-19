@@ -45,7 +45,7 @@ import java.util.Map;
                 return br;
         }
         
-        static void ToarrayList(BufferedReader br1, ArrayList Chiphead, ArrayList Chiptype) throws IOException
+        static void ChipTypeToMap(BufferedReader br1, ArrayList Chiphead, ArrayList Chiptype) throws IOException
         {
             // 防止文件建立或读取失败，用catch捕捉错误并打印，也可以throw
             /* 读入TXT文件 */
@@ -66,6 +66,25 @@ import java.util.Map;
           
             
         }
+        
+          public static void testRenameFile(String fileN,String Nfile) {      
+    try {  
+        File src = new File(fileN);  
+       //String Nfile =fileN.replace(" ", "");  
+        File des = new File(Nfile);  
+        if (des.exists()) {  
+            boolean res = des.delete();  
+            if (!res) {  
+                System.out.println("Failed to delete file");  
+            }  
+        }  
+        if (!src.renameTo(des)) {  
+            System.out.println("Failed to renameTo file");  
+        }  
+    } catch (Exception e) {  
+        System.out.println(e.getMessage());  
+    }  
+            }
         
      
     }  

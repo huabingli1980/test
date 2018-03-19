@@ -15,6 +15,7 @@ import com.impinj.octane.TargetTag;
 import com.impinj.octane.WordPointers;
 import com.ruiz.constant.ReaderOpConsts;
 import com.ruiz.model.entity.ProgramInfo;
+import static marginafterdecomplie.OperationCompleteHandler.TidEpcMatchID;
 
 public class ReaderManager {	
 	public static int idCounter = 1;
@@ -49,6 +50,8 @@ public class ReaderManager {
 			seq.setOps(new ArrayList<>());
 			seq.setExecutionCount((short) 1); // delete after one time
 			seq.setState(SequenceState.Active);
+                        // int  pID=TidEpcMatchID.get(TID).getid();
+                        //int pID=1;
 			seq.setId(idCounter++);
 			seq.setTargetTag(new TargetTag());
 			seq.getTargetTag().setBitPointer((short) 0);
@@ -117,7 +120,7 @@ public class ReaderManager {
 			outstanding++;
 			//reader.removeTagOpCompleteListener();
                         
-                        System.out.println("op submitted for TID:"+TID);
+                        System.out.println("op:(" + idCounter++ +") submitted for TID:"+TID);
 			reader.addOpSequence(seq);
 		}
 		public void programTag(String currentEpc, short pcBit, String currentTid,

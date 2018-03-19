@@ -141,7 +141,8 @@ public class TagReptLisImplandMarginA implements TagReportListener {
 				String nowtime = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS").format(date);
 				String chipType = getChipType(currentTid);
 				String Barcode = barcode.getBarcode(currentEpc);
-				tableModel.addRow(new String[] { marginW.ListT.getRowCount() + 1 + "", currentTid, currentEpc, "", "",
+				tableModel.addRow(new String[] { 
+                                    marginW.ListT.getRowCount() + 1 + "", currentTid, currentEpc, "", "",
 				chipType, Barcode, nowtime });
 				System.out.println(tidepcT);
 				Myhashdata.add(mytag);

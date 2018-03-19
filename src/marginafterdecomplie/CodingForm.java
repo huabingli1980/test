@@ -12,23 +12,25 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import static marginafterdecomplie.ConnectOp1.reader;
 import static marginafterdecomplie.MainRun.filePath;
+import static marginafterdecomplie.MainRun.logger;
+import static marginafterdecomplie.cin_txt.testRenameFile;
 //import static marginafterdecomplie.OperationCompleteHandler.TidEpcMatchID;
 import org.dom4j.DocumentException;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  *
@@ -88,7 +90,8 @@ public class CodingForm extends javax.swing.JFrame {
       ReportN=csvnfilename.split("\\.")[0];
                             createlogTableFromCSV();
                         } catch (SQLException ex) {
-                            Logger.getLogger(CodingForm.class.getName()).log(Level.SEVERE, null, ex);
+                            showMessageDialog(null,"csv report writing error!");
+                           logger.info(Arrays.toString(ex.getStackTrace()));
                         }
                         getinfoFROMcsvdb();
                         getSkuDetailsFromCSVdb(SKU.getSelectedItem().toString());
@@ -172,15 +175,12 @@ public class CodingForm extends javax.swing.JFrame {
         Good = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         ListT = new javax.swing.JTable();
-        RorW = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
         ChipType = new javax.swing.JTextField();
         GetXml = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         xmlF = new javax.swing.JTextArea();
         PONum = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        GetOrderL = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         SKU = new javax.swing.JComboBox<>();
         xmlORcsv = new javax.swing.JComboBox<>();
@@ -192,6 +192,7 @@ public class CodingForm extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        UpdateXML = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -227,16 +228,6 @@ public class CodingForm extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(ListT);
 
-        RorW.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Read", "WriteEpc", "WriteTid", "LockOnly" }));
-        RorW.setName("TIDEPC"); // NOI18N
-        RorW.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RorWActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Operation Type:");
-
         ChipType.setName("Good"); // NOI18N
 
         GetXml.setText("...");
@@ -262,14 +253,6 @@ public class CodingForm extends javax.swing.JFrame {
         });
 
         jLabel5.setText("PONumber:");
-
-        GetOrderL.setText("Get SKU");
-        GetOrderL.setName("ClearL"); // NOI18N
-        GetOrderL.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GetOrderLActionPerformed(evt);
-            }
-        });
 
         jLabel6.setText("SKU:");
 
@@ -304,6 +287,13 @@ public class CodingForm extends javax.swing.JFrame {
 
         jLabel11.setText("Bad:");
 
+        UpdateXML.setText("Update XML");
+        UpdateXML.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateXMLActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -316,118 +306,107 @@ public class CodingForm extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel5)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(ChipType, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(28, 28, 28)
-                                        .addComponent(jLabel6)))
-                                .addGap(28, 28, 28))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(RorW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(Total, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(Good, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(Bad, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(90, 90, 90)
-                                .addComponent(xmlORcsv, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(UpdateXML)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(xmlORcsv, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(GetXml, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(24, 24, 24)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jScrollPane2)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Bad, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(Good, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(Total, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jButton3)
+                                            .addComponent(jButton2)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(ChipType, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(TagQty, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(Encoded, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(PONum, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(GetOrderL)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(GetXml, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton2)
-                                    .addComponent(jButton3))
-                                .addGap(27, 27, 27))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(SKU, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(TagQty, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Encoded, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(SKU, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(140, 248, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(xmlORcsv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(46, 46, 46)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel5)
-                                    .addComponent(Bad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel11))
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel6))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(ChipType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(RorW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(Total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel9))
-                                .addGap(9, 9, 9)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(Good, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(Total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel9))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(Good, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel10))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(Bad, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel11)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jButton3)
+                                    .addGap(6, 6, 6)
+                                    .addComponent(jButton2)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(GetXml, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton3))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(PONum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(GetOrderL)
-                            .addComponent(jButton2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel8)
-                                .addComponent(Encoded, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(SKU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel7)
-                                .addComponent(TagQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                                    .addComponent(xmlORcsv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(UpdateXML)
+                                .addGap(17, 17, 17)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(PONum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(SKU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(ChipType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(TagQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(Encoded, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
         );
 
@@ -450,10 +429,10 @@ public class CodingForm extends javax.swing.JFrame {
         } catch (OctaneSdkException ex) {
             Logger.getLogger(CodingForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-    OperationCompleteHandler.Mepclist.clear();
-    OperationCompleteHandler.Mtidlist.clear();
-    OperationCompleteHandler.epclist.clear();
-    OperationCompleteHandler.tidEpcList.clear();
+    //OperationCompleteHandler.Mepclist.clear();
+   // OperationCompleteHandler.Mtidlist.clear();
+   // OperationCompleteHandler.epclist.clear();
+    //OperationCompleteHandler.tidEpcList.clear();
     OperationCompleteHandler.TidEpcMatchID.clear();
     
     ContextManager.tidList.clear();
@@ -461,62 +440,15 @@ public class CodingForm extends javax.swing.JFrame {
     ReaderManager.outstanding=0;
     
     
-    //OperationCompleteHandler.ID=0;
+    OperationCompleteHandler.ID=0;
    // OperationCompleteHandler.Resulttidepc.clear();
         
         ContextManager.tagsProcessed.clear();
         Good.setText("0");        // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void RorWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RorWActionPerformed
-        /*
-        TableColumnModel columnModel = ListT.getColumnModel();
-        Enumeration<TableColumn> tableColumns = columnModel.getColumns();
-        if (RorW.getSelectedItem().toString() == "Read") {
-
-            for (Enumeration t = tableColumns; t.hasMoreElements();) {
-
-                TableColumn a = (TableColumn) t.nextElement();
-                if ("Original EPC".equals(a.getHeaderValue().toString()) || "Original TID".equals(a.getHeaderValue().toString())) {
-                    columnModel.removeColumn(a);
-                }
-
-            }
-
-        } else if (RorW.getSelectedItem().toString() == "WriteEpc") {
-            for (Enumeration t = tableColumns; t.hasMoreElements();) {
-
-                TableColumn a = (TableColumn) t.nextElement();
-                if ("Original EPC".equals(a.getHeaderValue().toString()) || "Original TID".equals(a.getHeaderValue().toString())) {
-                    columnModel.removeColumn(a);
-                }
-
-            }
-            TableColumn aColumn = new TableColumn(6, 120);
-            aColumn.setHeaderValue("Original EPC");
-            ListT.getColumnModel().addColumn(aColumn);
-            ListT.getColumnModel().moveColumn(6, 2);
-        } else if (RorW.getSelectedItem().toString() == "WriteTid") {
-            for (Enumeration t = tableColumns; t.hasMoreElements();) {
-
-                TableColumn a = (TableColumn) t.nextElement();
-                if ("Original EPC".equals(a.getHeaderValue().toString()) || "Original TID".equals(a.getHeaderValue().toString())) {
-                    columnModel.removeColumn(a);
-                }
-
-            }
-            TableColumn aColumn = new TableColumn(6, 120);
-            aColumn.setHeaderValue("Original TID");
-            ListT.getColumnModel().addColumn(aColumn);
-            ListT.getColumnModel().moveColumn(6, 1);
-        }
-         */
-    }//GEN-LAST:event_RorWActionPerformed
-
     private void GetXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GetXmlActionPerformed
-        //super.mouseClicked(arg0);            
-        // KFileChooser chooser = new KFileChooser();
-        KFileChooser chooser = new KFileChooser();
+         KFileChooser chooser = new KFileChooser();
         //设置对话盒的位置和大小     
         if (p == null) {
             p = new Point();
@@ -560,33 +492,14 @@ public class CodingForm extends javax.swing.JFrame {
         Folder = chooser.getSelectedFile().getPath();
         // Folder = chooser.
         String filePath = chooser.getSelectedFile().getAbsolutePath();
-         String[] path1=filePath.split("\\\\");
-        String csvpathname=filePath.replace(path1[path1.length-1],"");
-      String  csvnfilename=path1[path1.length-1];
-      csvnfilename=csvnfilename.split("\\.")[0];
-        
-       String Nname=csvnfilename; 
-if (csvnfilename.contains(" ")){
-         Nname=csvnfilename.replace(" ","");
-         MainRun.testRenameFile(filePath, csvpathname+Nname+".csv");
-         xmlF.setText(csvpathname+Nname+".csv");
-}else xmlF.setText(filePath);
+
         pref.put("lastPath", Folder);
-       // xmlF.setText(filePath);
+        xmlF.setText(filePath);
     }//GEN-LAST:event_GetXmlActionPerformed
 
     private void PONumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PONumActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PONumActionPerformed
-
-    private void GetOrderLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GetOrderLActionPerformed
-        // XPathDemo xmlp= new XPathDemo();
-        try {
-             XMLParse.XMLread(xmlF.getText(),PONum,SKU);
-        } catch (Exception ex) {
-            Logger.getLogger(CodingForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_GetOrderLActionPerformed
 
     private void SKUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SKUActionPerformed
         // TODO add your handling code here:
@@ -595,8 +508,18 @@ if (csvnfilename.contains(" ")){
     private void xmlORcsvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xmlORcsvActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_xmlORcsvActionPerformed
+
+    private void UpdateXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateXMLActionPerformed
+        try {
+            XMLParse.XMLUpdate(xmlF.getText(),PONum,SKU,"00B07A13C43EBA8808000012");
+        } catch (DocumentException ex) {
+            Logger.getLogger(MarginTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_UpdateXMLActionPerformed
   void createlogTableFromCSV() throws SQLException{
            String fname=filePath+"\\KRReport_Sample.csv";
+           // showMessageDialog(null,fname);
         String[] path1=fname.split("\\\\");
         String csvpathname=fname.replace(path1[path1.length-1],"");
       String  csvnfilename=path1[path1.length-1];
@@ -613,8 +536,7 @@ if (csvnfilename.contains(" ")){
       Statement stmt = conn.createStatement();
       // Select the ID and NAME columns from sample.csv
       ResultSet results = stmt.executeQuery("SELECT * FROM "+csvnfilename);
-      Sqlite.createNewTable(results.getMetaData(), filePath, false,"","'Report_"+ReportN+"'");
-  }
+      Sqlite.createNewTable(results.getMetaData(), filePath, false,"","'Report_"+ReportN+"'");  }
     /**
      * @param args the command line arguments
      */
@@ -632,20 +554,18 @@ if (csvnfilename.contains(" ")){
     public javax.swing.JTextField Bad;
     public javax.swing.JTextField ChipType;
     public javax.swing.JTextField Encoded;
-    private javax.swing.JButton GetOrderL;
     public javax.swing.JButton GetXml;
     public javax.swing.JTextField Good;
     public javax.swing.JTable ListT;
     public javax.swing.JComboBox<String> PONum;
-    public javax.swing.JComboBox<String> RorW;
     public javax.swing.JComboBox<String> SKU;
     public javax.swing.JTextField TagQty;
     public javax.swing.JTextField Total;
+    public javax.swing.JButton UpdateXML;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
